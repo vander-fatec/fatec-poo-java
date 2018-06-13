@@ -29,6 +29,7 @@ public class CadastrarVenda {
         ArrayList<Ingresso> ingressos = new ArrayList<>();
         
         ArrayList<Evento> eventos = new EventoDAO().getEventosDisponiveis();
+        
         if(eventos.size() > 0){
             //CLIENTE
             Cliente cliente = new Cliente();
@@ -58,7 +59,8 @@ public class CadastrarVenda {
                                         new CadastrarCliente();
                                     }
                                     else{
-                                        venda.setCliente(new ClienteDAO().getCliente(1));
+                                        cliente = new ClienteDAO().getCliente(1);
+                                        venda.setCliente(cliente);
                                         System.out.println("Venda sem dados de cliente.\n");
                                         break;
                                     }
@@ -71,7 +73,8 @@ public class CadastrarVenda {
                                     new CadastrarCliente();
                                 }
                                 else{
-                                    venda.setCliente(new ClienteDAO().getCliente(1));
+                                    cliente = new ClienteDAO().getCliente(1);
+                                    venda.setCliente(cliente);
                                     System.out.println("Venda sem dados de cliente.\n");
                                     break;
                                 }
@@ -86,7 +89,8 @@ public class CadastrarVenda {
                     }
                 }
                 else{
-                    venda.setCliente(new Cliente());
+                    cliente = new ClienteDAO().getCliente(1);
+                    venda.setCliente(cliente);
                     System.out.println("Venda sem dados de cliente.");
                     break;
                 }              

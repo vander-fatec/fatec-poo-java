@@ -1,16 +1,13 @@
 package view;
 
-
 import bancodedados.dao.UsuarioDAO;
-import bancodedados.dao.VendaDAO;
-import formularios.BuscarVenda;
 import formularios.CadastrarUsuario;
 import javax.swing.JOptionPane;
 
 public class Principal {
     
     public static void main(String args[]){  
-
+        
         int confirma = JOptionPane.YES_OPTION;
         while(confirma == JOptionPane.YES_OPTION){
             while(true){
