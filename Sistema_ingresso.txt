@@ -1,0 +1,31 @@
+Usuario > Admin cadastrarUsuario (id, nome, senha, tipo) FEITO
+Usuario > Admin resetarSenhaUsuario ()
+Usuario > Admin, Vendedor alterarSenhaUsuario ()
+
+Evento > cadastrar, atualizar, deletar, buscar FEITOS
+Evento > associadoIngresso () [busca se id existe em algum ingresso]: boolean
+
+Ingresso > cadastrarIngresso (id, quantidade, valorInteiro, Evento, TipoIngresso) [se não equals, cadastra]: Ingresso
+Ingresso > buscarIngresso () [busca por id]: Ingresso
+Ingresso > buscarIngresso (void) [lista todos ingressos]: ArrayList<Ingressos>
+Ingresso > atualizarIngresso () [busca por id, atualiza qtd, valorInteiro]: boolean
+Ingresso > deletarIngresso () [busca se id existe em alguma venda]: boolean
+
+Cliente > cadastrarCliente (documento, nome) 
+Cliente > buscarCliente () [busca por documento]: Cliente
+Cliente > atualizarCliente () [busca por documento, atualiza nome]: boolean
+Cliente > deletarCliente () [busca se documento existe em alguma venda]: boolean
+
+Venda > cadastrarVenda (id, data, Ingresso, Cliente, Usuario)
+Venda > buscarVenda () [busca por id]: Venda
+Venda > buscarVenda (void) [busca por id]: ArrayLista<Venda>
+Venda > estornarVenda () [aumenta quantidade de ingresso e deletar venda]: boolean
+Venda > efetuarVenda () [diminui quantida de ingresso, associa cliente e usuario]: boolean
+
+
+
+
+
+
+
+
