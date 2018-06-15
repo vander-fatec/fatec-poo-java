@@ -28,26 +28,31 @@ public class BuscarVenda {
     }
     
     private void listarTodos(){
-        Funcoes.cabecalho("Todos eventos");
+        Funcoes.cabecalho("Todas as vendas");
         try{
             ArrayList<Venda> vendas = new bancodedados.dao.VendaDAO().getVendas();
-            ArrayList<Ingresso> ingressos;
+            ArrayList<String[]> ingressos;
             System.out.print("");
             if(vendas.size() > 0){
                 for(int x = 0; x < vendas.size(); x++){
-                    System.out.print(Funcoes.ANSI_PURPLE + "VENDA" + Funcoes.ANSI_RESET);
-                    System.out.println(" nº 0" + vendas.get(x).getId());
-                    System.out.println("DATA: " + Funcoes.dateToString(vendas.get(x).getDataVenda()));
-                    System.out.println("CLIENTE: " + vendas.get(x).getCliente().getNome());
-                    System.out.println("VENDEDOR: " + vendas.get(x).getUsuario().getLogin());
-                    System.out.println(Funcoes.ANSI_PURPLE + "INGRESSOS" + Funcoes.ANSI_RESET);
-                    ingressos = new VendaDAO().getIngressosVenda(vendas.get(x).getId());
                     
-                    System.out.println("EVENTO: " + ingressos.get(1).getEvento().getNome());
-                    System.out.println("TIPO INGRESSO: " + ingressos.get(1).getTipoIngresso().getNome());
-                    System.out.println("VALOR UNITÁRIO: " + ingressos.get(1).getValor());
-                    System.out.println("QUANTIDADE: " + ingressos.size());
+                    System.out.print(Funcoes.ANSI_PURPLE + "VENDA" + Funcoes.ANSI_RESET);
+                    System.out.print(" nº 0" + vendas.get(x).getId());
+                    System.out.print(" | DATA: " + Funcoes.dateToString(vendas.get(x).getDataVenda()));
+                    System.out.print(" | CLIENTE: " + vendas.get(x).getCliente().getNome());
+                    System.out.println(" | VENDEDOR: " + vendas.get(x).getUsuario().getLogin() + "\n");
                                      
+                    ingressos = new VendaDAO().getIngressosPorTipo(vendas.get(x).getId());  
+                    float total_geral = 0;
+                    for(int y=0; y < ingressos.size(); y++){                        
+                        System.out.println("NOME EVENTO.............: " + ingressos.get(y)[0]);
+                        System.out.println("TIPO INGRESSO...........: " + ingressos.get(y)[1]);
+                        System.out.print("QUANTIDADE x VALOR UNIT.: " +ingressos.get(y)[3] + " x " + Funcoes.valorToString(Float.parseFloat(ingressos.get(y)[2])));
+                        System.out.println(" (" + Funcoes.ANSI_RED + Funcoes.valorToString(Float.parseFloat(ingressos.get(y)[2]) * Float.parseFloat(ingressos.get(y)[3]))  + Funcoes.ANSI_RESET + ")");
+                        total_geral += Float.parseFloat(ingressos.get(y)[2]) * Float.parseFloat(ingressos.get(y)[3]);
+                        if(ingressos.size() != (y+1)){ System.out.print("\n");}
+                        else{System.out.print(Funcoes.ANSI_PURPLE + "VALOR TOTAL DA COMPRA = " + Funcoes.valorToString(total_geral) + Funcoes.ANSI_RESET + "\n");}
+                    }
                     if(vendas.size() != (x+1)) System.out.print("\n");
                 }
             }
@@ -66,7 +71,7 @@ public class BuscarVenda {
         System.out.print("BUSCAR ID: ");
         try{
             ArrayList<Venda> vendas = new bancodedados.dao.VendaDAO().getVendas();
-            ArrayList<Ingresso> ingressos;
+            
             int x = scanner.nextInt()-1;
             if(vendas.size() > 0){
                 
@@ -77,11 +82,7 @@ public class BuscarVenda {
                     System.out.println("VENDEDOR: " + vendas.get(x).getUsuario().getLogin());
                     System.out.println(Funcoes.ANSI_PURPLE + "INGRESSOS" + Funcoes.ANSI_RESET);
                     
-                    ingressos = new VendaDAO().getIngressosVenda(vendas.get(x).getId());                    
-                    System.out.println("EVENTO: " + ingressos.get(1).getEvento().getNome());
-                    System.out.println("TIPO INGRESSO: " + ingressos.get(1).getTipoIngresso().getNome());
-                    System.out.println("VALOR UNITÁRIO: " + ingressos.get(1).getValor());
-                    System.out.println("QUANTIDADE: " + ingressos.size());
+                    
                                      
                     if(vendas.size() != (x+1)) System.out.print("\n");
                 
@@ -93,4 +94,5 @@ public class BuscarVenda {
             System.out.println("Busca inconsistente");
         }
     }
+    
 }

@@ -69,7 +69,7 @@ CREATE TABLE ingresso (
     PRIMARY KEY (id_ingresso, id_venda)
 ) DEFAULT CHARSET = utf8;
 
-INSERT INTO cliente (id_cliente, cd_cpf_cnpj_cliente, nm_cliente) VALUES (0, 0, 'Não nominal');
+INSERT INTO cliente (id_cliente, cd_cpf_cnpj_cliente, nm_cliente) VALUES (1, 0, 'Ignorado');
 INSERT INTO funcao VALUES (1, 'Administrador');
 INSERT INTO funcao VALUES (2, 'Vendedor');
 INSERT INTO tipo_ingresso VALUES (1, 'Inteiro');

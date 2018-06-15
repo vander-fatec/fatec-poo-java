@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import negocio.Ingresso;
 import negocio.Venda;
 
@@ -177,4 +179,41 @@ public class VendaDAO {
         }
         return ingressos;
     }
+
+    //Retorna um ArrayList com um array de ingressos contendo
+    // nome do evento, tipo do ingresso, valor unitario do ingresso e quantidade total de ingressos comprado
+    public ArrayList<String[]> getIngressosPorTipo(int id_venda){
+        String sql = "SELECT e.nm_evento, ti.nm_tipo_ingresso, i.vl_ingresso, count(*) "
+                + "FROM ingresso as i "
+                + "JOIN evento as e "
+                + "JOIN tipo_ingresso as ti "
+                + "WHERE e.id_evento = i.id_evento and i.id_tipo_ingresso = ti.id_tipo_ingresso and i.id_venda = ? "
+                + "GROUP BY id_venda, i.id_tipo_ingresso, i.id_evento "
+                + "ORDER BY e.nm_evento";        
+        ArrayList<String[]> ingressos = new ArrayList<>();
+        String[] array = new String[4];
+        try(
+            Connection con = new ConnectionFactory().getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);
+            
+        ){     
+            stmt.setInt(1, id_venda);
+            ResultSet rs = stmt.executeQuery();
+            int x = 0;
+            while(rs.next()){
+                array[0] = rs.getString(1);
+                array[1] = rs.getString(2);
+                array[2] = Float.toString(rs.getFloat(3));
+                array[3] = Integer.toString(rs.getInt(4));
+                ingressos.add(x, array);
+                x++;
+            }
+        }catch(SQLException ex){
+            System.out.println("Erro desconhecido. Contate TI. (VendaDAO/07 " + ex + ")");
+        }
+        
+        return ingressos;
+        
+    }
+    
 }
