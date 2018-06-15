@@ -28,50 +28,65 @@ public class CadastrarEvento {
         System.out.print("NOME: ");
         evento.setNome(scanner.nextLine());
         
+        
+        while(true){
         System.out.print("DATA [dd/MM/aaaa]: ");
         String dataAux = scanner.nextLine();
-        try {
-            int dia = Integer.parseInt(dataAux.substring(0, 2));
-            int mes = Integer.parseInt(dataAux.substring(3, 5));
-            int ano = Integer.parseInt(dataAux.substring(6, 10)); 
-            Date data = new Date(ano-1900,mes-1,dia);
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd"); 
-            evento.setDataInicio(data);
-            
-            /*
-            //para o banco
-                System.out.println("getTime " +data.getDate()+"/"+(data.getMonth()+1)+"/"+(data.getYear()+1900));            
-            //por extenso
-                Locale ptBR = new Locale("pt", "BR");
-                df = DateFormat.getDateInstance(DateFormat.FULL, ptBR);
-                System.out.println(df.format(data));
-            */
-        } catch (NumberFormatException  ex) {
-            System.out.println("Entrada inconsistente");
-            return;
+            if(dataAux.length()==10){
+                try {
+                    int dia = Integer.parseInt(dataAux.substring(0, 2));
+                    int mes = Integer.parseInt(dataAux.substring(3, 5));
+                    int ano = Integer.parseInt(dataAux.substring(6, 10)); 
+                    Date data = new Date(ano-1900,mes-1,dia);
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd"); 
+                    evento.setDataInicio(data);
+                    break;
+                    /*
+                    //para o banco
+                        System.out.println("getTime " +data.getDate()+"/"+(data.getMonth()+1)+"/"+(data.getYear()+1900));            
+                    //por extenso
+                        Locale ptBR = new Locale("pt", "BR");
+                        df = DateFormat.getDateInstance(DateFormat.FULL, ptBR);
+                        System.out.println(df.format(data));
+                    */
+                } catch (NumberFormatException  ex) {
+                    System.out.println("Entrada inconsistente.");
+                }
+                
+            }
+            else{
+                System.out.println("Entrada inconsistente.");
+            }
         }
         
-        System.out.print("HORA [HH:mm]: ");
-        String horaAux = scanner.nextLine();
-        try {
-            Date data = null;
-            int hora = Integer.parseInt(horaAux.substring(0, 2));
-            int minuto = Integer.parseInt(horaAux.substring(3, 5));
-                        
-            SimpleDateFormat sf = new SimpleDateFormat("HH:mm");
-            
-            try{
-                data = sf.parse(Integer.toString(hora)+":"+Integer.toString(minuto));
-            }catch(ParseException e){
-                System.out.println("Erro na conversão de hora.");
-                return;
-            }            
-            Time time = new Time(data.getTime());            
-            //System.out.println(time.getHours() + ":" + time.getMinutes());
-            evento.setHoraInicio(time);
-        } catch (NumberFormatException  e) {
-            System.out.println("Entrada inconsistente");
-            return;
+        while(true){
+            System.out.print("HORA [HH:mm]: ");
+            String horaAux = scanner.nextLine();
+            if(horaAux.length() == 5){
+                try {
+                    Date data = null;
+                    int hora = Integer.parseInt(horaAux.substring(0, 2));
+                    int minuto = Integer.parseInt(horaAux.substring(3, 5));
+
+                    SimpleDateFormat sf = new SimpleDateFormat("HH:mm");
+
+                    try{
+                        data = sf.parse(Integer.toString(hora)+":"+Integer.toString(minuto));
+                    }catch(ParseException e){
+                        System.out.println("Entrada inconsistente.");
+                        return;
+                    }            
+                    Time time = new Time(data.getTime());            
+                    //System.out.println(time.getHours() + ":" + time.getMinutes());
+                    evento.setHoraInicio(time);
+                    break;
+                } catch (NumberFormatException  e) {
+                    System.out.println("Entrada inconsistente");
+                }
+            }
+            else{
+                System.out.println("Entrada inconsistente");
+            }
         }
        
         System.out.print("LOCAL: ");
