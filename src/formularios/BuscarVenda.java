@@ -47,7 +47,7 @@ public class BuscarVenda {
                     for(int y=0; y < ingressos.size(); y++){                        
                         System.out.println("NOME EVENTO.............: " + ingressos.get(y)[0]);
                         System.out.println("TIPO INGRESSO...........: " + ingressos.get(y)[1]);
-                        System.out.print("QUANTIDADE x VALOR UNIT.: " +ingressos.get(y)[3] + " x " + Funcoes.valorToString(Float.parseFloat(ingressos.get(y)[2])));
+                        System.out.print("QUANTIDADE x VALOR UNIT.: " +ingressos.get(y)[2] + " x " + Funcoes.valorToString(Float.parseFloat(ingressos.get(y)[2])));
                         System.out.println(" (" + Funcoes.ANSI_RED + Funcoes.valorToString(Float.parseFloat(ingressos.get(y)[2]) * Float.parseFloat(ingressos.get(y)[3]))  + Funcoes.ANSI_RESET + ")");
                         total_geral += Float.parseFloat(ingressos.get(y)[2]) * Float.parseFloat(ingressos.get(y)[3]);
                         if(ingressos.size() != (y+1)){ System.out.print("\n");}

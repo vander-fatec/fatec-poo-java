@@ -188,8 +188,7 @@ public class VendaDAO {
                 + "WHERE e.id_evento = i.id_evento and i.id_tipo_ingresso = ti.id_tipo_ingresso and i.id_venda = ? "
                 + "GROUP BY id_venda, i.id_tipo_ingresso, i.id_evento "
                 + "ORDER BY e.nm_evento";        
-        ArrayList<String[]> ingressos = new ArrayList<>();
-        String[] array = new String[4];
+        ArrayList<String[]> ingressos = new ArrayList<>();        
         try(
             Connection con = new ConnectionFactory().getConnection();
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -199,6 +198,7 @@ public class VendaDAO {
             ResultSet rs = stmt.executeQuery();
             int x = 0;
             while(rs.next()){
+                String[] array = new String[4];
                 array[0] = rs.getString(1);
                 array[1] = rs.getString(2);
                 array[2] = Float.toString(rs.getFloat(3));
