@@ -26,10 +26,11 @@ public class CadastrarVenda {
         Scanner scanner = new Scanner(System.in);        
         Venda venda = new Venda();
         Ingresso ingresso = new Ingresso();
-        ArrayList<Ingresso> ingressos = new ArrayList<>();
-        
+        ArrayList<Ingresso> ingressos = new ArrayList<>();        
         ArrayList<Evento> eventos = new EventoDAO().getEventosDisponiveis();
+        float valor_total = 0;
         
+        /***************** CLIENTE *****************/
         if(eventos.size() > 0){
             //CLIENTE
             Cliente cliente = new Cliente();
@@ -95,55 +96,56 @@ public class CadastrarVenda {
                     break;
                 }              
             }            
-
-            //EVENTO        
-            System.out.print("\n");
-            Funcoes.subCabecalho("Evento"); 
-            for(int x=0; x< eventos.size(); x++){
-                System.out.println(Funcoes.ANSI_PURPLE + "[" + (x+1) + "] " + Funcoes.ANSI_RESET + "NOME: " + eventos.get(x).getNome() + "\n"
-                    + "    QUANTIDADE DE INGRESSO DISPONIVEL: " + eventos.get(x).getQuantidadeIngresso() + "\n"
-                    + "    INTEIRO: " + Funcoes.valorToString(eventos.get(x).getValorIngresso()) + " | "
-                    + "MEIA COMUM: " + Funcoes.valorToString((eventos.get(x).getValorIngresso()/2)) + " | "
-                    + "VIP: " + Funcoes.valorToString((eventos.get(x).getValorIngresso()*1.5f)) + " | "
-                    + "MEIA VIP: " + Funcoes.valorToString((eventos.get(x).getValorIngresso()*1.5f)/2));
-                if(eventos.size() != (x+1)) System.out.print("\n");
-            }
-            System.out.print("\n");
-            ingresso.setEvento(eventos.get((Funcoes.escolherOpcao(1, eventos.size())-1)));
+            /***************** FIM CLIENTE *****************/
             
-            //TIPO INGRESSO
-            ArrayList<TipoIngresso> tipo_ingresso = new TipoIngressoDAO().getTiposIngresso();
-            if(tipo_ingresso.size() > 0){
+            while(true){
+                /***************** EVENTO *****************/     
+                ingresso = new Ingresso();
+                System.out.print("\n");
+                Funcoes.subCabecalho("Evento"); 
+                for(int x=0; x< eventos.size(); x++){
+                    System.out.println(Funcoes.ANSI_PURPLE + "[" + (x+1) + "] " + Funcoes.ANSI_RESET + "NOME: " + eventos.get(x).getNome() + "\n"
+                        + "    QUANTIDADE DE INGRESSO DISPONIVEL: " + eventos.get(x).getQuantidadeIngresso() + "\n"
+                        + "    INTEIRO: " + Funcoes.valorToString(eventos.get(x).getValorIngresso()) + " | "
+                        + "MEIA COMUM: " + Funcoes.valorToString((eventos.get(x).getValorIngresso()/2)) + " | "
+                        + "VIP: " + Funcoes.valorToString((eventos.get(x).getValorIngresso()*1.5f)) + " | "
+                        + "MEIA VIP: " + Funcoes.valorToString((eventos.get(x).getValorIngresso()*1.5f)/2));
+                    if(eventos.size() != (x+1)) System.out.print("\n");
+                }
+                ingresso.setEvento(eventos.get((Funcoes.escolherOpcao(1, eventos.size())-1)));
+                System.out.print("\n");            
+                /***************** FIM EVENTO *****************/
+
+                /***************** TIPO INGRESSO *****************/
+                ArrayList<TipoIngresso> tipo_ingresso = new TipoIngressoDAO().getTiposIngresso();
                 System.out.print("\n");
                 Funcoes.subCabecalho("Tipo de Ingresso");
                 for(int x=0; x< tipo_ingresso.size(); x++){
                     System.out.println(Funcoes.ANSI_PURPLE + "[" + (x+1) + "] " + Funcoes.ANSI_RESET + "TIPO: " + tipo_ingresso.get(x).getNome());
                 }
                 ingresso.setTipoIngresso(tipo_ingresso.get((Funcoes.escolherOpcao(1, tipo_ingresso.size())-1)));
-                
-                //VENDA
+                /***************** FIM TIPO INGRESSO *****************/
+
+                /***************** QUANTIDADE DE INGRESSOS *****************/  
                 //QUANTIDADE DE INGRESSOS NESSA VENDA
                 System.out.print("\n");
                 Funcoes.subCabecalho("Quantidade de ingresso");
                 System.out.print("QUANTIDADE DE COMPRA [max " + ingresso.getEvento().getQuantidadeIngresso() + "]");
                 int qtd_ingresso = Funcoes.escolherOpcao(1,ingresso.getEvento().getQuantidadeIngresso());
                 ingresso.getEvento().setQuantidadeIngresso(ingresso.getEvento().getQuantidadeIngresso()-qtd_ingresso);
-                float valor_total = 0;
                 
-                for(int x=0; x< qtd_ingresso ; x++){
+                for(int x=0; x< qtd_ingresso ; x++){                    
                     ingressos.add(ingresso);
                     valor_total += ingresso.getValor();
                 }
+                /***************** FIM QUANTIDADE DE INGRESSOS *****************/  
                 
                 Funcoes.cabecalho("Relação de venda - nº0" + (new VendaDAO().numVenda()));
-                System.out.println(Funcoes.ANSI_GREEN + "TOTAL A PAGAR " + Funcoes.valorToString(valor_total) + Funcoes.ANSI_RESET);
+                System.out.println(Funcoes.ANSI_GREEN + "TOTAL A PAGAR " + Funcoes.valorToString(valor_total) + Funcoes.ANSI_RESET + "\n");
                 
-                //FINALIZAR COMPRA
-                System.out.print("\n");
-                Funcoes.subCabecalho("Finalização");
-                System.out.print("FINALIZAR COMPRA [s/n]: ");
-                
-                boolean ret;
+                Funcoes.subCabecalho("Comtinuação");
+                System.out.print("CONTINUAR VENDA [s/n]: ");
+                boolean ret = false;
                 while(true){
                     String entrada = scanner.nextLine();
                     if(entrada.equals("n") || entrada.equals("N")){
@@ -157,27 +159,51 @@ public class CadastrarVenda {
                     else{
                         System.out.print("Entrada inconsistente, tente novamente [s/n]: ");
                     }
-                }
+                }          
+                if(!ret) break;
+            }  
                 
-                if(ret){                     
-                    venda.setUsuario(new UsuarioDAO().getUsuario(new Login().getUsuario().getLogin()));
-                    new EventoDAO().altera(ingresso.getEvento());
-                    new VendaDAO().adiciona(venda);
-                    ArrayList<Ingresso> ingressosAux = new ArrayList<>();
-                    
-                    for(int x=0; x < ingressos.size(); x++){                        
-                        ingressos.get(x).setVenda(new VendaDAO().getVenda(new VendaDAO().numVenda()-1));
-                        new IngressoDAO().adiciona(ingressos.get(x));                        
-                        ingressosAux.add(new IngressoDAO().getIngresso(new IngressoDAO().numUltimoIngresso()));                        
-                    }                   
+            
+            
+            
+            
+            
+            
+            
+            
+            /***************** FINALIZAR VENDA *****************/  
+            System.out.print("\n");
+            Funcoes.subCabecalho("Finalização");
+            System.out.print("FINALIZAR VENDA [s/n = (cancelar a venda)]: ");
+            boolean ret = true;
+            while(true){
+                String entrada = scanner.nextLine();
+                if(entrada.equals("n") || entrada.equals("N")){
+                    ret = false;
+                    break;
+                }
+                else if (entrada.equals("s") || entrada.equals("S")){
+                    ret = true;
+                    break;
                 }
                 else{
-                    System.out.println("\nVenda cancelada.");
+                    System.out.print("Entrada inconsistente, tente novamente [s/n]: ");
                 }
+            }          
+            if(ret){                     
+                venda.setUsuario(new UsuarioDAO().getUsuario(new Login().getUsuario().getLogin()));
+                new EventoDAO().altera(ingresso.getEvento());
+                new VendaDAO().adiciona(venda);
+                
+                for(int x=0; x < ingressos.size(); x++){                        
+                    ingressos.get(x).setVenda(new VendaDAO().getVenda(new VendaDAO().numVenda()-1));
+                    new IngressoDAO().adiciona(ingressos.get(x));                        
+                }                   
             }
             else{
-                System.out.println("Não há tipo de ingresso cadastrado.");
+                System.out.println("\nVenda cancelada.");
             }
+            /***************** FIM FINALIZAR VENDA *****************/            
         }
         else{
             System.out.println("Não há ingressos para venda em nenhum evento.");
