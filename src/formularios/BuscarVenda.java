@@ -65,33 +65,37 @@ public class BuscarVenda {
     }
     
     private void buscarPorId(){
-        System.out.print("\n");
-        Funcoes.subCabecalho("Evento por id");
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("BUSCAR ID: ");
+        System.out.print("\n");        
+        Funcoes.subCabecalho("Venda por número");
+        Scanner scanner = new Scanner(System.in);        
+        
         try{
-            ArrayList<Venda> vendas = new bancodedados.dao.VendaDAO().getVendas();
+            System.out.print("NUMERO DA VENDA: ");
+            Venda venda = new bancodedados.dao.VendaDAO().getVenda(scanner.nextInt());
             
-            int x = scanner.nextInt()-1;
-            if(vendas.size() > 0){
-                
-                    System.out.print(Funcoes.ANSI_PURPLE + "VENDA" + Funcoes.ANSI_RESET);
-                    System.out.println(" nº 0" + vendas.get(x).getId());
-                    System.out.println("DATA: " + Funcoes.dateToString(vendas.get(x).getDataVenda()));
-                    System.out.println("CLIENTE: " + vendas.get(x).getCliente().getNome());
-                    System.out.println("VENDEDOR: " + vendas.get(x).getUsuario().getLogin());
-                    System.out.println(Funcoes.ANSI_PURPLE + "INGRESSOS" + Funcoes.ANSI_RESET);
-                    
-                    
-                                     
-                    if(vendas.size() != (x+1)) System.out.print("\n");
-                
+            if(venda.getId()>0){
+                System.out.print(Funcoes.ANSI_PURPLE + "VENDA" + Funcoes.ANSI_RESET + " nº 0" + venda.getId());
+                System.out.print(" | DATA: " + Funcoes.dateToString(venda.getDataVenda()));
+                System.out.print(" | CLIENTE: " + venda.getCliente().getNome());
+                System.out.println(" | VENDEDOR: " + venda.getUsuario().getLogin() + "\n");
+
+                ArrayList<String[]> ingressos = new VendaDAO().getIngressosPorTipo(venda.getId());  
+                float total_geral = 0;
+                for(int y=0; y < ingressos.size(); y++){                        
+                    System.out.println("NOME EVENTO.............: " + ingressos.get(y)[0]);
+                    System.out.println("TIPO INGRESSO...........: " + ingressos.get(y)[1]);
+                    System.out.print("QUANTIDADE x VALOR UNIT.: " +ingressos.get(y)[3] + " x " + Funcoes.valorToString(Float.parseFloat(ingressos.get(y)[2])));
+                    System.out.println(" (" + Funcoes.ANSI_RED + Funcoes.valorToString(Float.parseFloat(ingressos.get(y)[2]) * Float.parseFloat(ingressos.get(y)[3]))  + Funcoes.ANSI_RESET + ")");
+                    total_geral += Float.parseFloat(ingressos.get(y)[2]) * Float.parseFloat(ingressos.get(y)[3]);
+                    if(ingressos.size() != (y+1)){ System.out.print("\n");}
+                    else{System.out.print(Funcoes.ANSI_PURPLE + "VALOR TOTAL DA COMPRA = " + Funcoes.valorToString(total_geral) + Funcoes.ANSI_RESET + "\n");}
+                }
             }
             else{
-                System.out.println("Não há eventos cadastrados");
+                System.out.println("Venda não encontrada.");
             }
         } catch (Exception e) {
-            System.out.println("Busca inconsistente");
+            System.out.println("Venda não encontrada.");
         }
     }
     
