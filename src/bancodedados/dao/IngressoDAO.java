@@ -112,6 +112,21 @@ public class IngressoDAO {
         }
     }
     
+    //Remove todos os ingressos de uma venda especifica
+    public void removerIngressosVenda(int id_venda) {
+        String sql = "DELETE FROM ingresso WHERE "
+                + "id_venda = ?";
+        try(
+            Connection con = new ConnectionFactory().getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);        
+        ){
+            stmt.setInt(1, id_venda);
+            stmt.execute();
+        } catch (SQLException ex) {
+            System.out.println("Erro desconhecido. Contate TI. (IngressoDAO/06 " + ex + ")");
+        }
+    }
+    
     //Retorna a ultima id de ingresso inserida no banco
     public int numUltimoIngresso() {
         String sql = "SELECT MAX(id_ingresso) FROM ingresso";
@@ -125,7 +140,7 @@ public class IngressoDAO {
                 max = rs.getInt(1);
             }      
         } catch (SQLException ex) {
-            System.out.println("Erro desconhecido. Contate TI. (IngressoDAO/06 " + ex + ")");
+            System.out.println("Erro desconhecido. Contate TI. (IngressoDAO/07 " + ex + ")");
         }
         return max;
     }

@@ -104,6 +104,7 @@ public class Menu {
             System.out.print(""
             + Funcoes.ANSI_PURPLE +"[1]" + Funcoes.ANSI_RESET + " Efetuar venda\n"
             + Funcoes.ANSI_PURPLE +"[2]" + Funcoes.ANSI_RESET + " Consultar venda\n"
+            + Funcoes.ANSI_PURPLE +"[3]" + Funcoes.ANSI_RESET + " Estornar venda\n"
             + Funcoes.ANSI_RED +"[0]" + Funcoes.ANSI_RESET + " Voltar ao menu\n"
             + ":: ");
              
@@ -111,6 +112,8 @@ public class Menu {
                 case 1 : new CadastrarVenda();
                     break;
                 case 2 : new BuscarVenda();                 
+                   break;
+                case 3 : new DeletarVenda();                 
                    break;
                 case 0 : new Menu(); 
                     break;

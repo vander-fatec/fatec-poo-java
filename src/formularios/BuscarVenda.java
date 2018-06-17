@@ -95,7 +95,7 @@ public class BuscarVenda {
                 System.out.println("Venda não encontrada.");
             }
         } catch (Exception e) {
-            System.out.println("Venda não encontrada.");
+            System.out.println("Entrada inconsistente.");
         }
     }
     

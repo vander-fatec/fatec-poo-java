@@ -85,7 +85,7 @@ public class EventoDAO {
                 eventos.add(evento);
             }
         }catch(SQLException ex){
-            System.out.println("Erro desconhecido. Contate TI. (EventoDAO/02 " + ex + ")");
+            System.out.println("Erro desconhecido. Contate TI. (EventoDAO/03 " + ex + ")");
         }
         return eventos;
     }
@@ -114,7 +114,7 @@ public class EventoDAO {
             }
             
         } catch (SQLException ex) {
-            System.out.println("Erro desconhecido. Contate TI. (EventoDAO/03 " + ex + ")");
+            System.out.println("Erro desconhecido. Contate TI. (EventoDAO/04 " + ex + ")");
         }
         return evento;
     }
@@ -138,7 +138,7 @@ public class EventoDAO {
             
             stmt.execute();
         } catch (SQLException ex) {
-            System.out.println("Erro desconhecido. Contate TI. (EventoDAO/04 " + ex + ")");
+            System.out.println("Erro desconhecido. Contate TI. (EventoDAO/05 " + ex + ")");
         }
     }
     
@@ -153,7 +153,24 @@ public class EventoDAO {
             stmt.setInt(1, evento.getId());
             stmt.execute();
         } catch (SQLException ex) {
-            System.out.println("Erro desconhecido. Contate TI. (EventoDAO/05 " + ex + ")");
+            System.out.println("Erro desconhecido. Contate TI. (EventoDAO/06 " + ex + ")");
         }
     }
+    
+    //Altera a quantidade de um evento no banco de dados
+    public void aumentarQuantidadeIngresso(int id_evento, int quantidade){
+        String sql = "UPDATE evento set qt_ingresso_evento= (qt_ingresso_evento + ?) WHERE id_evento=?";
+        try(
+            Connection con = new ConnectionFactory().getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);        
+        ){            
+            stmt.setInt(1, quantidade);
+            stmt.setInt(2, id_evento);
+            
+            stmt.execute();
+        } catch (SQLException ex) {
+            System.out.println("Erro desconhecido. Contate TI. (EventoDAO/07 " + ex + ")");
+        }
+    }
+    
 }
