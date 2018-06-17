@@ -121,15 +121,13 @@ public class VendaDAO {
     }
     
     //Remove um ingresso de uma venda do banco de dados
-    public void removerVenda(Venda venda, int id) {
-        String sql = "DELETE FROM venda WHERE "
-                + "id_venda = ? AND id_ingresso = ?";
+    public void removerVenda(Venda venda) {
+        String sql = "DELETE FROM venda WHERE id_venda = ?";
         try(
             Connection con = new ConnectionFactory().getConnection();
             PreparedStatement stmt = con.prepareStatement(sql);        
         ){
             stmt.setInt(1, venda.getId());
-            stmt.setInt(2, id);
             stmt.execute();
         } catch (SQLException ex) {
             System.out.println("Erro desconhecido. Contate TI. (VendaDAO/05 " + ex + ")");
@@ -209,7 +207,7 @@ public class VendaDAO {
                 x++;
             }
         }catch(SQLException ex){
-            System.out.println("Erro desconhecido. Contate TI. (VendaDAO/07 " + ex + ")");
+            System.out.println("Erro desconhecido. Contate TI. (VendaDAO/08 " + ex + ")");
         }
         
         return ingressos;
