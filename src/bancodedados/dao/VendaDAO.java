@@ -214,4 +214,44 @@ public class VendaDAO {
         
     }
     
+    //Retorna true se o cliente existir em alguma venda, false se não estiver associado
+    public boolean isClienteAssociado(int id_cliente){
+        String sql = "SELECT * FROM venda WHERE id_cliente=?";
+        boolean ret = false;
+       
+        try(
+            Connection con = new ConnectionFactory().getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);            
+        ){     
+            stmt.setInt(1, id_cliente);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){                
+                ret = true;
+            }
+        }catch(SQLException ex){
+            System.out.println("Erro desconhecido. Contate TI. (VendaDAO/09 " + ex + ")");
+        }
+        return ret;
+    }
+    
+    //Retorna true se o evento existir em alguma venda, false se não estiver associado
+    public boolean isEventoAssociado(int id_evento){
+        String sql = "SELECT * FROM ingresso WHERE id_evento=?";
+        boolean ret = false;
+       
+        try(
+            Connection con = new ConnectionFactory().getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);            
+        ){     
+            stmt.setInt(1, id_evento);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){                
+                ret = true;
+            }
+        }catch(SQLException ex){
+            System.out.println("Erro desconhecido. Contate TI. (VendaDAO/09 " + ex + ")");
+        }
+        return ret;
+    }
+    
 }

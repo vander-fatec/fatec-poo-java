@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 public class Principal {
     
     public static void main(String args[]){  
-        
+                
         int confirma = JOptionPane.YES_OPTION;
         while(confirma == JOptionPane.YES_OPTION){
             while(true){
