@@ -125,7 +125,7 @@ public class CadastrarVenda {
                 }
                 ingresso.setTipoIngresso(tipo_ingresso.get((Funcoes.escolherOpcao(1, tipo_ingresso.size())-1)));
                 /***************** FIM TIPO INGRESSO *****************/
-
+                
                 /***************** QUANTIDADE DE INGRESSOS *****************/  
                 //QUANTIDADE DE INGRESSOS NESSA VENDA
                 System.out.print("\n");
@@ -141,7 +141,7 @@ public class CadastrarVenda {
                 /***************** FIM QUANTIDADE DE INGRESSOS *****************/  
                 
                 Funcoes.cabecalho("Relação de venda - nº0" + (new VendaDAO().numVenda()));
-                System.out.println(Funcoes.ANSI_GREEN + "TOTAL A PAGAR " + Funcoes.valorToString(valor_total) + Funcoes.ANSI_RESET + "\n");
+                System.out.println(Funcoes.ANSI_RED + "TOTAL A PAGAR " + Funcoes.valorToString(valor_total) + Funcoes.ANSI_RESET + "\n");
                 
                 Funcoes.subCabecalho("Comtinuação");
                 System.out.print("CONTINUAR VENDA [s/n]: ");
@@ -162,14 +162,6 @@ public class CadastrarVenda {
                 }          
                 if(!ret) break;
             }  
-                
-            
-            
-            
-            
-            
-            
-            
             
             /***************** FINALIZAR VENDA *****************/  
             System.out.print("\n");
@@ -198,7 +190,8 @@ public class CadastrarVenda {
                 for(int x=0; x < ingressos.size(); x++){                        
                     ingressos.get(x).setVenda(new VendaDAO().getVenda(new VendaDAO().numVenda()-1));
                     new IngressoDAO().adiciona(ingressos.get(x));                        
-                }                   
+                } 
+                System.out.println("\nVenda finalizada.");
             }
             else{
                 System.out.println("\nVenda cancelada.");
